@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+	<title>API Fun</title>
+	<style>
+		body {text-align:center;}
+	</style>
+	<meta charset="utf-8"/>
+	<script>
+		function loadMessages() {
+			request = new XMLHttpRequest();
+			console.log("1: created request");
+ 
+			request.open("GET", "https://binaryjazz.us/wp-json/genrenator/v1/genre/10", true);
+			console.log("2: open success");
+
+			request.onreadystatechange = function() {
+				console.log("3: event fired");
+			
+				if (request.readyState == 4 && request.status == 200) {
+					console.log("5: data is ready");
+					theData = request.responseText;
+					var returnHTML = "";
+					data = JSON.parse(theData);
+					for (let i = 0; i < data.length; i++) {
+						returnHTML += "Genre " + (i + 1) + ": " + data[i] + "<br>";
+					}
+
+					document.getElementById("data").innerHTML = returnHTML;
+
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+					document.getElementById("data").innerHTML = "Whoops, something went wrong!";
+				}
+				else if (request.readyState == 3) {
+					console.log("6: ready state 3 - request received,data being sent");
+					document.getElementById("data").innerHTML = "Come back soon!";
+				}
+
+			}
+
+			request.send();
+			console.log("4 request sent");
+		}
+	</script>
+</head>
+
+
+<body onload="loadMessages()">
+	<h1>API Fun!</h1>
+	<h2>List of Random Music Genres From the API:</h2>
+	<div id="data">Loading...</div>
+	<h2>What the API Does:</h2>
+	<p>This API allows users to fetch a list of random music genres of a specified length, compiled from fragments of different genres.</p>
+	<h2>Website Where the API is From:</h2>
+	<p>https://binaryjazz.us/genrenator-api/</p>
+	<h2>Options Used for the API Request:</h2>
+	<p>I used an XMLHttpRequest object, and used the "open" method by using a GET request. I then parsed the JSON data to get a JSON object, which I queried to get the information I displayed.</p>
+	<h2>Two Applications Where This API Would Be Helpful:</h2>
+	<p>This API could be helpful in an application such as this one (practice using APIs) because it is free and does not require authentication. It also could be useful as a suggestion tool for what type of music to listen to, for those who want to explore a variety of music genres.</p>
+</body>
+</html>
